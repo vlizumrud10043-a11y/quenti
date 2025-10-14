@@ -1,4 +1,4 @@
-import all from "email-providers/all.json" assert { type: "json" };
+import all from "email-providers/all.json" with { type: "json" };
 
 import { sendConfirmCodeEmail } from "@quenti/emails";
 import { disbandOrgUsersByDomain } from "@quenti/enterprise/users";
