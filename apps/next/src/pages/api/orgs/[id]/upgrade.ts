@@ -29,7 +29,7 @@ export default async function handler(
     return res.status(402).json({ error: "Payment required" });
 
   let org = await prisma.organization.findFirst({
-    where: { metadata: { path: "$.paymentId", arrayContains: session_id} },
+    where: { metadata: { path: "$.paymentId", arrayOverlap: [session_id] },
   });
 
   const member = await prisma.organizationMembership.findFirst({
