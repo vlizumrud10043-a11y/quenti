@@ -30,7 +30,7 @@ export default async function handler(
     return res.status(402).json({ error: "Payment required" });
 
   
-const org = await prisma.organization.findUnique({
+let org = await prisma.organization.findUnique({
   where: { id },
 });
 
