@@ -6,7 +6,7 @@ import { TRPCError } from "@trpc/server";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse,
+  res: NextApiResponse
 ) {
   if (req.method !== "POST") {
     return res.status(405).end();
@@ -34,11 +34,7 @@ export default async function handler(
     where: { id },
   });
 
-  const metadata =
-    org?.metadata as
-      | { paymentId?: unknown[] }
-      | undefined
-      | null;
+  const metadata = org?.metadata as { paymentId?: unknown[] } | undefined | null;
 
   if (
     !org ||
