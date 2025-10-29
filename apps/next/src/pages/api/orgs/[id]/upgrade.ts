@@ -58,7 +58,8 @@ const memberships = await prisma.organizationMembership.findMany({
 });
 
 const member = memberships.find((m) => {
-  const step = m.metadata?.onboardingStep as string[];
+  const metadata = m.metadata as { onboardingStep?: unknown[] } | null;
+  const step = metadata?.onboardingStep;
   return Array.isArray(step) && step.includes("publish");
 });
 
