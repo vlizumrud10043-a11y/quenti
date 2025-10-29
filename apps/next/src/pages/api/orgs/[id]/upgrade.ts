@@ -29,23 +29,15 @@ export default async function handler(
     return res.status(402).json({ error: "Payment required" });
 
   // @ts-expect-error Prisma JSON path array wildcard TS strictness
-let org = await prisma.organization.findFirst({
-  where: {
-    metadata: {
-      path: "$.paymentId[*]",
-      equals: session_id
-    }
-  },
+const org = await prisma.organization.findUnique({
+  where: { id },
 });
-  
-let org = await prisma.organization.findFirst({
-  where: {
-    metadata: {
-      path: "$.paymentId[*]",
-      equals: session_id
-    }
-  }
-});
+
+if (!org || !Array.isArray(org.metadata?.paymentId) || !org.metadata.paymentId.includes(session_id)) {
+  throw new TRPCError({
+    code: "NOT_FOUND",
+  });
+}
 
   const member = await prisma.organizationMembership.findFirst({
     where: {
