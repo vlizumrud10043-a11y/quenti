@@ -28,7 +28,7 @@ export default async function handler(
   if (checkoutSession.payment_status !== "paid")
     return res.status(402).json({ error: "Payment required" });
 
-  // @ts-expect-error Prisma JSON path array wildcard TS strictness
+  
 const org = await prisma.organization.findUnique({
   where: { id },
 });
