@@ -33,11 +33,24 @@ const org = await prisma.organization.findUnique({
   where: { id },
 });
 
-if (!org || !Array.isArray(org.metadata?.paymentId) || !org.metadata.paymentId.includes(session_id)) {
+const metadata = org?.metadata as { paymentId?: unknown[] } | undefined | null;
+
+if (
+  !org ||
+  !metadata ||
+  !Array.isArray(metadata.paymentId) ||
+  !metadata.paymentId.includes(session_id)
+) {
   throw new TRPCError({
     code: "NOT_FOUND",
   });
 }
+
+// if (!org || !Array.isArray(org.metadata?.paymentId) || !org.metadata.paymentId.includes(session_id)) {
+//   throw new TRPCError({
+//     code: "NOT_FOUND",
+//   });
+// }
 
   const member = await prisma.organizationMembership.findFirst({
     where: {
