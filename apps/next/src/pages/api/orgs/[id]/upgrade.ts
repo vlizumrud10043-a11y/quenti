@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { TRPCError } from '@trpc/server';
 import type Stripe from "stripe";
 import { z } from "zod";
 
