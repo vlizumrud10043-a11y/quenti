@@ -53,15 +53,20 @@ if (
 //   });
 // }
 
-  const member = await prisma.organizationMembership.findFirst({
-    where: {
-      orgId: id,
-      metadata: { path: "$.onboardingStep", equals: "publish" },
-    },
-    select: {
-      userId: true,
-    },
+const memberships = await prisma.organizationMembership.findMany({
+  where: { orgId: id },
+});
+
+const member = memberships.find((m) => {
+  const step = m.metadata?.onboardingStep as string[];
+  return Array.isArray(step) && step.includes("publish");
+});
+
+if (!member) {
+  throw new TRPCError({
+    code: "NOT_FOUND",
   });
+}
 
   if (!org) {
     org = await upgradeOrganization(
