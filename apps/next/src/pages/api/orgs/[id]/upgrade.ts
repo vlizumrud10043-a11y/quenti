@@ -1,86 +1,80 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { TRPCError } from '@trpc/server';
-import type Stripe from "stripe";
-import { z } from "zod";
+import { TRPCError } from "@trpc/server";
 
-import { getServerAuthSession } from "@quenti/auth";
-import { stripe } from "@quenti/payments";
 import { prisma } from "@quenti/prisma";
-import { upgradeOrganization } from "@quenti/trpc/server/lib/orgs/upgrade";
-
-const querySchema = z.object({
-  id: z.string().cuid2(),
-  session_id: z.string().min(1),
-});
+import { stripe } from "@quenti/payments";
+import { upgradeOrganization } from "@quenti/payments/server";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse,
+  res: NextApiResponse
 ) {
-  const { id, session_id } = querySchema.parse(req.query);
+  if (req.method !== "POST") {
+    return res.status(405).end();
+  }
 
-  const checkoutSession = await stripe.checkout.sessions.retrieve(session_id, {
-    expand: ["subscription"],
-  });
-  if (!checkoutSession.subscription)
-    return res.status(404).json({ error: "Checkout session not found" });
+  const { id } = req.query as { id: string };
+  const { session_id } = req.body as { session_id: string };
 
-  const subscription = checkoutSession.subscription as Stripe.Subscription;
-  if (checkoutSession.payment_status !== "paid")
+  if (!session_id) {
+    return res.status(400).json({ error: "Missing session_id" });
+  }
+
+  let checkoutSession;
+  try {
+    checkoutSession = await stripe.checkout.sessions.retrieve(session_id);
+  } catch (e) {
+    return res.status(400).json({ error: "Invalid session_id" });
+  }
+
+  if (checkoutSession.payment_status !== "paid") {
     return res.status(402).json({ error: "Payment required" });
+  }
 
-  
-let org = await prisma.organization.findUnique({
-  where: { id },
-});
-
-const metadata = org?.metadata as { paymentId?: unknown[] } | undefined | null;
-
-if (
-  !org ||
-  !metadata ||
-  !Array.isArray(metadata.paymentId) ||
-  !metadata.paymentId.includes(session_id)
-) {
-  throw new TRPCError({
-    code: "NOT_FOUND",
+  const org = await prisma.organization.findUnique({
+    where: { id },
   });
-}
 
-// if (!org || !Array.isArray(org.metadata?.paymentId) || !org.metadata.paymentId.includes(session_id)) {
-//   throw new TRPCError({
-//     code: "NOT_FOUND",
-//   });
-// }
+  const metadata = org?.metadata as { paymentId?: unknown[] } | undefined | null;
 
-const memberships = await prisma.organizationMembership.findMany({
-  where: { orgId: id },
-});
+  if (
+    !org ||
+    !metadata ||
+    !Array.isArray(metadata.paymentId) ||
+    !metadata.paymentId.includes(session_id)
+  ) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+    });
+  }
 
-const member = memberships.find((m) => {
-  const metadata = m.metadata as { onboardingStep?: unknown[] } | null;
-  const step = metadata?.onboardingStep;
-  return Array.isArray(step) && step.includes("publish");
-});
-
-if (!member) {
-  throw new TRPCError({
-    code: "NOT_FOUND",
+  const memberships = await prisma.organizationMembership.findMany({
+    where: { orgId: id },
   });
-}
+
+  const member = memberships.find((m) => {
+    const metadata = m.metadata as { onboardingStep?: unknown[] } | null;
+    const step = metadata?.onboardingStep;
+    return Array.isArray(step) && step.includes("publish");
+  });
+
+  if (!member) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+    });
+  }
+
+  let updatedOrg = org;
 
   if (!org) {
-    org = await upgradeOrganization(
+    updatedOrg = await upgradeOrganization(
       id,
       member?.userId,
       checkoutSession.id,
-      subscription.id,
-      subscription.items.data[0]?.id,
+      checkoutSession.amount_total,
+      checkoutSession.currency
     );
   }
 
-  const session = await getServerAuthSession({ req, res });
-  if (!session) return { message: "Upgraded successfully" };
-
-  res.redirect(302, `/orgs/${org.id}?upgrade=success`);
+  return res.status(200).json({ org: updatedOrg });
 }
