@@ -3,7 +3,6 @@ import { TRPCError } from "@trpc/server";
 
 import { prisma } from "@quenti/prisma";
 import { stripe } from "@quenti/payments";
-import { upgradeOrganization } from "@quenti/payments/server";
 
 export default async function handler(
   req: NextApiRequest,
@@ -64,17 +63,6 @@ export default async function handler(
     });
   }
 
-  let updatedOrg = org;
-
-  if (!org) {
-    updatedOrg = await upgradeOrganization(
-      id,
-      member?.userId,
-      checkoutSession.id,
-      checkoutSession.amount_total,
-      checkoutSession.currency
-    );
-  }
-
-  return res.status(200).json({ org: updatedOrg });
+  // Для free users — просто повертаємо org (upgrade не потрібен)
+  return res.status(200).json({ org });
 }
