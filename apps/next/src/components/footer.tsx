@@ -127,25 +127,13 @@ export const Footer = () => {
             </Box>
             <FooterLink href={WEBSITE_URL} text="Home" />
             <FooterLink href="#" text="Pricing" />
-            <FooterLink
-              href="#"
-              text="Open source"
-            />
+            <FooterLink href="#" text="Open source" />
             <FooterLink href="#" text="Status" />
-            <FooterLink
-              href="#"
-              text="Organizations"
-            />
-            <FooterLink
-              href="#"
-              text="Contact support"
-            />
+            <FooterLink href="#" text="Organizations" />
+            <FooterLink href="#" text="Contact support" />
             <FooterLink href="#" text="Privacy Policy" />
             <FooterLink href="#" text="Terms of Service" />
-            <FooterLink
-              href="#"
-              text="License"
-            />
+            <FooterLink href="#" text="License" />
           </HStack>
           <Flex
             display={{ base: "inherit", lg: "none" }}
