@@ -1,6 +1,6 @@
 import { FrameLogo, Link } from "@quenti/components";
 import { GithubIcon, XIcon } from "@quenti/components/icons";
-import { SUPPORT_EMAIL } from "@quenti/lib/constants/email";
+//import { SUPPORT_EMAIL } from "@quenti/lib/constants/email";
 import { WEBSITE_URL } from "@quenti/lib/constants/url";
 
 import {
@@ -126,24 +126,24 @@ export const Footer = () => {
               <SocialLinksContainer />
             </Box>
             <FooterLink href={WEBSITE_URL} text="Home" />
-            <FooterLink href="https://github.com/vlizumrud10043-a11y/quenti.git" text="Pricing" />
+            <FooterLink href="#" text="Pricing" />
             <FooterLink
-              href="https://github.com/vlizumrud10043-a11y/quenti.git"
+              href="#"
               text="Open source"
             />
-            <FooterLink href="https://status.quenti.io" text="Status" />
+            <FooterLink href="#" text="Status" />
             <FooterLink
-              href="https://github.com/vlizumrud10043-a11y/quenti.git"
+              href="#"
               text="Organizations"
             />
             <FooterLink
-              href="https://github.com/vlizumrud10043-a11y/quenti.git"
+              href="#"
               text="Contact support"
             />
-            <FooterLink href="https://github.com/vlizumrud10043-a11y/quenti.git" text="Privacy Policy" />
-            <FooterLink href="https://github.com/vlizumrud10043-a11y/quenti.git" text="Terms of Service" />
+            <FooterLink href="#" text="Privacy Policy" />
+            <FooterLink href="#" text="Terms of Service" />
             <FooterLink
-              href="https://github.com/vlizumrud10043-a11y/quenti.git"
+              href="#"
               text="License"
             />
           </HStack>
