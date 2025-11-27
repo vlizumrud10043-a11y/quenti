@@ -1,6 +1,6 @@
 import { FrameLogo, Link } from "@quenti/components";
 import { GithubIcon, XIcon } from "@quenti/components/icons";
-import { SUPPORT_EMAIL } from "@quenti/lib/constants/email";
+//import { SUPPORT_EMAIL } from "@quenti/lib/constants/email";
 import { WEBSITE_URL } from "@quenti/lib/constants/url";
 
 import {
