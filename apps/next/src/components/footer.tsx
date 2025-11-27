@@ -52,7 +52,7 @@ export const Footer = () => {
                 <HStack>
                   <FrameLogo width="18px" height="18px" />
                   <Heading size="md" className="notranslate">
-                    Quenti
+                    Flashcards
                   </Heading>
                 </HStack>
               </Link>
@@ -64,7 +64,7 @@ export const Footer = () => {
                 }}
               >
                 <IconCopyright size={12} />
-                <Text fontSize="sm">2024</Text>
+                <Text fontSize="sm">Гурова ДПОК-24мг</Text>
               </HStack>
               <Box
                 color="gray.300"
@@ -126,24 +126,24 @@ export const Footer = () => {
               <SocialLinksContainer />
             </Box>
             <FooterLink href={WEBSITE_URL} text="Home" />
-            <FooterLink href={`${WEBSITE_URL}/pricing`} text="Pricing" />
+            <FooterLink href={`#`} text="Pricing" />
             <FooterLink
-              href="https://github.com/quenti-io/quenti"
+              href="https://github.com/vlizumrud10043-a11y/quenti.git"
               text="Open source"
             />
             <FooterLink href="https://status.quenti.io" text="Status" />
             <FooterLink
-              href={`${WEBSITE_URL}/organizations`}
+              href={`#`}
               text="Organizations"
             />
             <FooterLink
-              href={`mailto:${SUPPORT_EMAIL}`}
+              href={`#`}
               text="Contact support"
             />
-            <FooterLink href={`${WEBSITE_URL}/privacy`} text="Privacy Policy" />
-            <FooterLink href={`${WEBSITE_URL}/terms`} text="Terms of Service" />
+            <FooterLink href={`#`} text="Privacy Policy" />
+            <FooterLink href={`#`} text="Terms of Service" />
             <FooterLink
-              href="https://github.com/quenti-io/quenti/blob/main/LICENSE"
+              href="#"
               text="License"
             />
           </HStack>
@@ -163,10 +163,10 @@ export const Footer = () => {
 const SocialLinksContainer = () => {
   return (
     <HStack spacing="3">
-      <SocialLink href="https://github.com/quenti-io">
+      <SocialLink href="https://github.com/vlizumrud10043-a11y/quenti.git">
         <GithubIcon w="4" h="4" />
       </SocialLink>
-      <SocialLink href="https://twitter.com/quentiapp">
+      <SocialLink href="https://www.facebook.com/vlada.gurova.598784?locale=uk_UA">
         <XIcon w="4" h="4" />
       </SocialLink>
     </HStack>
