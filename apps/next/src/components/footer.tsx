@@ -64,7 +64,7 @@ export const Footer = () => {
                 }}
               >
                 <IconCopyright size={12} />
-                <Text fontSize="sm">Гурова ДПОк-24мг</Text>
+                <Text fontSize="sm">GurovaV</Text>
               </HStack>
               <Box
                 color="gray.300"
