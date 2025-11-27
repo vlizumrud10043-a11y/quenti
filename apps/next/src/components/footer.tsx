@@ -52,7 +52,7 @@ export const Footer = () => {
                 <HStack>
                   <FrameLogo width="18px" height="18px" />
                   <Heading size="md" className="notranslate">
-                    Quenti
+                    Flashcards
                   </Heading>
                 </HStack>
               </Link>
@@ -64,7 +64,7 @@ export const Footer = () => {
                 }}
               >
                 <IconCopyright size={12} />
-                <Text fontSize="sm">2024</Text>
+                <Text fontSize="sm">Гурова ДПОк-24мг</Text>
               </HStack>
               <Box
                 color="gray.300"
